@@ -17,8 +17,13 @@ conn.cursor().execute('''CREATE TABLE IF NOT EXISTS users
 conn.cursor().execute('''CREATE TABLE IF NOT EXISTS offers
     (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER NOT NULL,
-        FOREIGN KEY (user_id) REFERENCES users(id)
+        user_id INTEGER,
+        title TEXT,
+        description TEXT,
+        price REAL,
+        date TEXT,
+        status BIT(1),
+        FOREIGN KEY(user_id) REFERENCES users(id)
     ) ''')
 
 conn.commit()
