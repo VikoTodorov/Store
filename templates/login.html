@@ -1,0 +1,33 @@
+<!-- all new -->
+
+
+<script>
+    function login() {
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+
+        var request = new XMLHttpRequest();
+        request.open("POST", '/login', true);
+        request.onload = function() {
+            var token = JSON.parse(request.responseText).token;
+            if(token != null) {
+                document.cookie = 'token=' + token + ';';
+                document.location = '/';
+            } else {
+                aler("Wrong credentials");
+            }
+        }
+        request.send(JSON.stringify({email: email, password: password}));
+    }
+</script>
+
+<form action="/posts/new" method="post">
+    <label>email</label>
+    <input id="email"/>
+    </br>
+    <label>Password</label>
+    <input id="password" type="password"/>
+    </br>
+    <button type="submit" onclick="login()">Submit</button>
+  </form>
+  
