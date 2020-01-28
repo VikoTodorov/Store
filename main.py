@@ -21,7 +21,7 @@ def new_offer():
         return render_template('new_offer.html')
     elif request.method == 'POST':
         user = User.find(request.form['email'])
-        values = (None, user.id, request.form['title'], request.form['description'], request.form['price'], request.form['date'])
+        values = (None, user, request.form['title'], request.form['description'], request.form['price'], request.form['date'])
         Offer(*values).create()
         return redirect(url_for('list_offers'))
 

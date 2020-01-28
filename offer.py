@@ -1,4 +1,5 @@
 from db import DB
+from user import User
 
 class Offer:
     def __init__(self, id, user, title, description, price, date):
@@ -15,6 +16,7 @@ class Offer:
             values = (self.user.id, self.title, self.description, self.price, self.date, self.status)
             db.execute('INSERT INTO offers(user_id, title, description, price, date, status) VALUES(?, ?, ?, ?, ?, ?)', values)
             return self
+
     @staticmethod
     def all():
         with DB() as db:
