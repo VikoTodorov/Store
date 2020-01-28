@@ -10,9 +10,9 @@ class Offer:
         self.date = date
         self.status = 1
 
-    def __create__(self):
+    def create(self):
         with DB() as db:
-            values = (self.user, self.title, self.description, self.price, self.date, self.status)
+            values = (self.user.id, self.title, self.description, self.price, self.date, self.status)
             db.execute('INSERT INTO offers(user_id, title, description, price, date, status) VALUES(?, ?, ?, ?, ?, ?)', values)
             return self
     @staticmethod
@@ -20,3 +20,8 @@ class Offer:
         with DB() as db:
             rows = db.execute('SELECT * FROM offers').fetchall()
             return [Offer(*row) for row in rows]
+    @staticmethod
+    def find(id):
+        with DB() as db:
+            row = db.execute('SELECT * FROM offers WHERE id = ?', (id, )).fetchone()
+            return Offer(*row) # :)

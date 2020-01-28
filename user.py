@@ -14,3 +14,9 @@ class User:
             values = (self.email, self.password, self.name, self.adress, self.phone)
             db.execute('INSERT INTO users (email, password, name, adress, phone) VALUES (?, ?, ?, ?, ?)', values)
             return self
+    
+    @staticmethod
+    def find(email):
+        with DB() as db:
+            row = db.execute('SELECT * FROM users WHERE email = ?', (email, )).fetchone()
+            return User(*row) # :)
