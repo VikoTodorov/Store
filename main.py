@@ -16,7 +16,7 @@ def require_login(func):
     def wrapper(*args, **kwargs):
         token = request.cookies.get('token')
         if not token or not User.verify_token(token):
-            return redirect('/login/failed')
+            return redirect('/login')
         return func(*args, **kwargs)
     return wrapper
 
@@ -69,16 +69,3 @@ def login():
         token = user.generate_token()
         return jsonify({'token': token})
 
-@app.route('/login/failed', methods=["GET", "POST"])
-def login_failed():
-    if request.method == "GET":
-        return render_template('login_failed.html')
-    elif request.method == "POST":
-        data = json.loads(request.data.decode('ascii'))
-        name = data['name']
-        password = data['password']
-        user = User.find_by_name(name)
-        if not user or not user.verify_password(password):
-            return jsonify({'token': None})
-        token = user.generate_token()
-        return jsonify({'token': token})
