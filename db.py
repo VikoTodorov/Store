@@ -4,29 +4,30 @@ DB_NAME = 'store.db'
 
 conn = sqlite3.connect(DB_NAME)
 
-conn.cursor().execute('''CREATE TABLE IF NOT EXISTS users
+conn.cursor().execute('''CREATE TABLE IF NOT EXISTS USERS
     (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        email NVARCHAR(255),
-        password TEXT NOT NULL,
-        name TEXT,
-        adress TEXT,
-        phone INTEGER
-    ) ''')
+        ID         INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,
+        EMAIL      NVARCHAR(255),
+        PASSWORD   TEXT NOT NULL,
+        NAME       NVARCHAR(60),
+        ADRESS     TEXT,
+        PHONE      INTEGER
+    ); ''')
 
-conn.cursor().execute('''CREATE TABLE IF NOT EXISTS offers
+conn.cursor().execute('''CREATE TABLE IF NOT EXISTS OFFERS
     (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER,
-        title TEXT,
-        description TEXT,
-        price REAL,
-        date TEXT,
-        status INTEGER,
-        FOREIGN KEY(user_id) REFERENCES users(id)
-    ) ''')
+        ID         INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,
+        USER_ID    INTEGER,
+        TITLE      TEXT,
+        DESCRIOPTION TEXT,
+        PRICE      REAL,
+        DATE       TEXT,
+        STATUS     INTEGER,
+        FOREIGN KEY(USER_ID) REFERENCES USERS(ID)
+    ); ''')
 
 conn.commit()
+
 
 class DB:
     def __enter__(self):

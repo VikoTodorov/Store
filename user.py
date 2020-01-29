@@ -1,5 +1,6 @@
 from db import DB
 
+
 class User:
     def __init__(self, id, email, password, name, adress, phone):
         self.id = id
@@ -11,14 +12,18 @@ class User:
 
     def create(self):
         with DB() as db:
-            values = (self.email, self.password, self.name, self.adress,\
-                 self.phone)
-            db.execute('INSERT INTO users (email, password, name, adress, \
-                phone) VALUES (?, ?, ?, ?, ?)', values)
+            values = (self.email,
+                      self.password,
+                      self.name,
+                      self.adress,
+                      self.phone)
+            db.execute('INSERT INTO USERS (EMAIL, PASSWORD, NAME, ADRESS, \
+                PHONE) VALUES (?, ?, ?, ?, ?)', values)
             return self
-    
+
     @staticmethod
     def find(email):
         with DB() as db:
-            row = db.execute('SELECT * FROM users WHERE email = ?', (email, )).fetchone()
+            row = db.execute('SELECT * FROM USERS WHERE EMAIL = ?',
+                             (email, )).fetchone()
             return User(*row)
