@@ -5,7 +5,6 @@ from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSign
 SECRET_KEY = 'Bfb<jbcMbbf1^MASHm@snw2212JmM'
 
 
-
 class User:
     def __init__(self, id, email, password, name, adress, phone):
         self.id = id
@@ -17,16 +16,12 @@ class User:
 
     def create(self):
         with DB() as db:
-            values = (self.email,
-                      self.password,
-                      self.name,
-                      self.adress,
-                      self.phone)
-            db.execute('INSERT INTO USERS (EMAIL, PASSWORD, NAME, ADRESS, \
-                PHONE) VALUES (?, ?, ?, ?, ?)', values)
+            values = (self.email, self.password, self.name, self.adress,\
+                 self.phone)
+            db.execute('INSERT INTO users (email, password, name, adress, \
+                phone) VALUES (?, ?, ?, ?, ?)', values)
             return self
 
-<<<<<<< HEAD
     @staticmethod    
     def hash_password(password):
         return hashlib.sha256(password.encode('utf-8')).hexdigest()
@@ -62,11 +57,3 @@ class User:
         except BadSignature:
             return False
         return True
-=======
-    @staticmethod
-    def find(email):
-        with DB() as db:
-            row = db.execute('SELECT * FROM USERS WHERE EMAIL = ?',
-                             (email, )).fetchone()
-            return User(*row)
->>>>>>> 5b7646931f2cd95d4120950a6f5cff6b50196a62
