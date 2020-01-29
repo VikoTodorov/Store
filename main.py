@@ -69,3 +69,6 @@ def login():
         token = user.generate_token()
         return jsonify({'token': token})
 
+
+if __name__ == '__main__':
+    app.run()
