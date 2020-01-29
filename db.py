@@ -21,7 +21,7 @@ conn.cursor().execute('''CREATE TABLE IF NOT EXISTS offers
         title TEXT,
         description TEXT,
         price REAL,
-        date TEXT,
+        date DATETIME DEFAULT CURRENT_TIMESTAMP,
         status INTEGER,
         FOREIGN KEY(user_id) REFERENCES users(id)
     ) ''')
