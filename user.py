@@ -33,19 +33,21 @@ class User:
     def find(email):
         with DB() as db:
             row = db.execute('SELECT * FROM users WHERE email = ?', (email, )).fetchone()
-            return User(*row)
+            if row:
+                return User(*row)
 
     @staticmethod
-    def find_by_name(name):
-        if not name:
+    def find_by_id(id):
+        if not id:
             return None
         with DB() as db:
-            row = db.execute('SELECT * FROM users WHERE name = ?', (name, )).fetchone()
+            row = db.execute('SELECT * FROM users WHERE id = ?', (id, )).fetchone()
             return User(*row)
+
 
     def generate_token(self):
         s = Serializer(SECRET_KEY, expires_in=600)
-        return s.dumps({'name' : self.name})
+        return s.dumps({'email' : self.email})
     
     @staticmethod
     def verify_token(token):

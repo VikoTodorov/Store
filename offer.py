@@ -26,4 +26,4 @@ class Offer:
     def find(id):
         with DB() as db:
             row = db.execute('SELECT * FROM offers WHERE id = ?', (id, )).fetchone()
-            return Offer(*row) # :)
+            return Offer(*row)

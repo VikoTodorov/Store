@@ -49,8 +49,8 @@ def register():
         return redirect(url_for('list_offers'))
 
 @auth.verify_password
-def verify_password(name, password):
-    user = User.find_by_name(name)
+def verify_password(id, password):
+    user = User.find_by_id(id)
     if user:
         return user.verify_password(password)
     return False
@@ -61,9 +61,9 @@ def login():
         return render_template('login.html')
     elif request.method == "POST":
         data = json.loads(request.data.decode('ascii'))
-        name = data['name']
+        email = data['email']
         password = data['password']
-        user = User.find_by_name(name)
+        user = User.find(email)
         if not user or not user.verify_password(password):
             return jsonify({'token': None})
         token = user.generate_token()
