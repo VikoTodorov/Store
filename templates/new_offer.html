@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% body block %}
 <form action="/offers/new" method="post">
     <label>Title</label>
     <input name="title"/>
@@ -16,3 +18,4 @@
     <br>
     <input type="submit">Submit</input>
 </form>
+{% body block %}
