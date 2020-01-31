@@ -27,6 +27,16 @@ def unlogged():
     return render_template('index.html')
 
 
+@app.route('/register')
+def return_register():
+    return render_template('register.html')
+
+
+@app.route('/login')
+def return_login():
+    return render_template('login.html')
+
+
 @app.route('/offers/new', methods=['GET', 'POST'])
 def new_offer():
     if request.method == 'GET':
@@ -41,7 +51,7 @@ def new_offer():
         return redirect(url_for('logged'))
 
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register-check', methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
         return render_template('register.html')
