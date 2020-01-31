@@ -53,6 +53,44 @@ def new_offer():
         Offer(*values).create()
         return redirect(url_for('logged'))
 
+## 
+
+@app.route('/offers/<int:id>')
+def show_offer(id):
+    offer = Offer.find(id)
+    return render_template('offer.html', offer=offer)
+
+
+@app.route('/offers/<int:id>/edit', methods=['GET', 'POST'])
+def edit_offer(id):
+    offer = Offer.find(id)
+    if request.method == 'GET':
+        return render_template('edit_offer.html', post=post)
+    elif request.method == 'POST':
+        offer.title = request.form['title'],
+        offer.description = request.form['description'],
+        offer.price = request.form['price'],
+        offer.date = request.form['date'])
+        offer.save()
+        return redirect(url_for('show_offer', id = post.id))
+
+
+@app.route('offers/<int:id>/deleate', methods=['POST'])
+def deleate_offer(id):
+    offer = Offer.find(id)
+    offer.deleate()
+    return redirect(url_for('list_offers'))
+
+
+# @app.route('/<int:id>/buy', methods=['POST'])
+# def buy_offer(id):
+#     offer = Offer.find(id)
+#     ?
+#     ?
+
+#     return ?
+
+##
 
 @app.route('/register-check', methods=['GET', 'POST'])
 def register():

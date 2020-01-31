@@ -35,3 +35,13 @@ class Offer:
             row = db.execute('SELECT * FROM offers WHERE id = ?',
                              (id, )).fetchone()
             return Offer(*row)
+
+    def delete(self):
+        with DB() as db:
+            db.execute('DELETE FROM offers WHERE id = ?', (self.id,))
+
+    def save(self):
+        with DB() as db:
+            values = (self.title, self.description, self.price, self.date)
+            db.execute('INSERT INTO offers (title, description, price, date) VALUES (?, ?, ?, ?)', values)
+            return self
