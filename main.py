@@ -45,7 +45,7 @@ def new_offer():
     if request.method == 'GET':
         return render_template('new_offer.html')
     elif request.method == 'POST':
-        user = User.find(request.form['email'])
+        # user = User.find(request.form['email'])
         values = (None, user, request.form['title'],
                   request.form['description'],
                   request.form['price'],
@@ -65,20 +65,20 @@ def show_offer(id):
 def edit_offer(id):
     offer = Offer.find(id)
     if request.method == 'GET':
-        return render_template('edit_offer.html', post=post)
+        return render_template('edit_offer.html', offer=offer)
     elif request.method == 'POST':
         offer.title = request.form['title'],
         offer.description = request.form['description'],
         offer.price = request.form['price'],
-        offer.date = request.form['date'])
+        offer.date = request.form['date']
         offer.save()
-        return redirect(url_for('show_offer', id = post.id))
+        return redirect(url_for('show_offer', id = offer.id))
 
 
-@app.route('offers/<int:id>/deleate', methods=['POST'])
-def deleate_offer(id):
+@app.route('/offers/<int:id>/delete', methods=['POST', ])
+def delete_offer(id):
     offer = Offer.find(id)
-    offer.deleate()
+    offer.delete()
     return redirect(url_for('list_offers'))
 
 
