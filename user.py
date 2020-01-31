@@ -33,7 +33,10 @@ class User:
         with DB() as db:
             row = db.execute('SELECT * FROM users WHERE email = ?',
                              (email, )).fetchone()
-            return User(*row)
+            if row:
+                return User(*row)
+            else:
+                return False
 
     @staticmethod
     def find_by_id(id):

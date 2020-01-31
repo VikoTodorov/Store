@@ -53,7 +53,8 @@ def new_offer():
         Offer(*values).create()
         return redirect(url_for('logged'))
 
-## 
+##
+
 
 @app.route('/offers/<int:id>')
 def show_offer(id):
@@ -72,7 +73,7 @@ def edit_offer(id):
         offer.price = request.form['price'],
         offer.date = request.form['date']
         offer.save()
-        return redirect(url_for('show_offer', id = offer.id))
+        return redirect(url_for('show_offer', id=offer.id))
 
 
 @app.route('/offers/<int:id>/delete', methods=['POST', ])
@@ -97,13 +98,18 @@ def register():
     if request.method == 'GET':
         return render_template('register.html')
     elif request.method == 'POST':
-        values = (None, request.form['email'],
-                  User.hash_password(request.form['password']),
-                  request.form['name'], request.form['adress'],
-                  request.form['phone'])
-        User(*values).create()
-        session['email'] = values[1]
-        return redirect(url_for('logged'))
+        user = User.find(request.form['email'])
+        if not user:
+            values = (None, request.form['email'],
+                      User.hash_password(request.form['password']),
+                      request.form['name'], request.form['adress'],
+                      request.form['phone'])
+            User(*values).create()
+            session['email'] = values[1]
+            return redirect(url_for('logged'))
+        else:
+            return render_template('register.html', error="You can't use \
+                                   that email")
 
 
 @app.route('/checklogin', methods=['GET', 'POST'])
@@ -114,12 +120,15 @@ def login():
         email = request.form['email']
         password = request.form['password']
         user = User.find(email)
-        if not user and user.verify_password(password):
+        if not user:
             return render_template("/login.html", error="Invalid email or \
                                    password")
-        else:
+        elif user.verify_password(password):
             session['email'] = email
             return render_template('/logged.html')
+        else:
+            return render_template("/login.html", error="Invalid email or \
+                                   password")
 
 
 @app.route('/logout')
