@@ -1,73 +1,63 @@
-from flask import Flask
-from flask import render_template, request, redirect, url_for, jsonify
-from flask_httpauth import HTTPBasicAuth
-import json
-from functools import wraps
+from flask import Flask, session
+from flask import render_template, request, redirect, url_for
 
 import db
 from user import User
 from offer import Offer
 
 app = Flask(__name__)
-auth = HTTPBasicAuth()
+app.secret_key = "aZzWyKPkFeJ,:k234"
 
-def require_login(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        token = request.cookies.get('token')
-        if not token or not User.verify_token(token):
-            return redirect('/login')
-        return func(*args, **kwargs)
-    return wrapper
 
 @app.route('/')
 def hello_world():
-    return redirect(url_for('list_offers'))
+    if 'email' in session:
+        return redirect(url_for('logged'))
+    else:
+        return redirect(url_for('unlogged'))
 
-@app.route('/offers')
-def list_offers():
-    return render_template('offers.html', offers=Offer.all())
+
+@app.route('/logged', endpoint="logged")
+def logged():
+    return render_template('logged.html', offers=Offer.all())
+
+
+@app.route('/unlogged')
+def unlogged():
+    return render_template('index.html')
+
 
 @app.route('/offers/new', methods=['GET', 'POST'])
-@require_login
 def new_offer():
     if request.method == 'GET':
         return render_template('new_offer.html')
     elif request.method == 'POST':
         user = User.find(request.form['email'])
-        values = (None, user, request.form['title'], request.form['description'], request.form['price'], request.form['date'])
+        values = (None, user, request.form['title'],
+                  request.form['description'],
+                  request.form['price'],
+                  request.form['date'])
         Offer(*values).create()
-        return redirect(url_for('list_offers'))
+        return redirect(url_for('logged'))
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
         return render_template('register.html')
     elif request.method == 'POST':
-        values = (None, request.form['email'], User.hash_password(request.form['password']), request.form['name'], request.form['adress'], request.form['phone'])
+        values = (None, request.form['email'],
+                  User.hash_password(request.form['password']),
+                  request.form['name'], request.form['adress'],
+                  request.form['phone'])
         User(*values).create()
-        return redirect(url_for('list_offers'))
+        session['email'] = values[1]
+        return redirect(url_for('logged'))
 
-@auth.verify_password
-def verify_password(id, password):
-    user = User.find_by_id(id)
-    if user:
-        return user.verify_password(password)
-    return False
 
-@app.route('/login', methods=["GET", "POST"])
+@app.route('/checklogin')
 def login():
-    if request.method == "GET":
-        return render_template('login.html')
-    elif request.method == "POST":
-        data = json.loads(request.data.decode('ascii'))
-        email = data['email']
-        password = data['password']
-        user = User.find(email)
-        if not user or not user.verify_password(password):
-            return jsonify({'token': None})
-        token = user.generate_token()
-        return jsonify({'token': token})
+    pass
 
 
 if __name__ == '__main__':

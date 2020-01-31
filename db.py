@@ -23,10 +23,12 @@ conn.cursor().execute('''CREATE TABLE IF NOT EXISTS offers
         price REAL,
         date DATETIME DEFAULT CURRENT_TIMESTAMP,
         status INTEGER,
+        buyer INTEGER,
         FOREIGN KEY(user_id) REFERENCES users(id)
     ) ''')
 
 conn.commit()
+
 
 class DB:
     def __enter__(self):
