@@ -76,12 +76,15 @@ def login():
         email = request.form['email']
         password = request.form['password']
         user = User.find(email)
-        if not user and user.verify_password(password):
+        if not user:
             return render_template("/login.html", error="Invalid email or \
                                    password")
-        else:
+        elif user.verify_password(password):
             session['email'] = email
             return render_template('/logged.html')
+        else:
+            return render_template("/login.html", error="Invalid email or \
+                                   password")
 
 
 @app.route('/logout')

@@ -1,6 +1,5 @@
 from db import DB
 import hashlib
-# from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 
 
 class User:
@@ -33,7 +32,8 @@ class User:
         with DB() as db:
             row = db.execute('SELECT * FROM users WHERE email = ?',
                              (email, )).fetchone()
-            return User(*row)
+            if row:
+                return User(*row)
 
     @staticmethod
     def find_by_id(id):
