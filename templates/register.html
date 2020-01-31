@@ -1,21 +1,19 @@
 {% extends 'base.html' %}
 {% block body %}
-<form action="/register-check" method="post" class="register">
-    <label>Email</label>
-    <input type="email" name="email"/>
-    </br>
-    <label>Password</label>
-    <input name="password" type="password"/>
-    </br>
-    <label>Name</label>
-    <input name="name"/>
-    </br>
-    <label>Adress</label>
-    <input name="adress"/>
-    </br>
-    <label>Phone Number</label>
-    <input name="phone" type="tel"/>
-    </br>
-    <button type="submit">Submit</button>
-</form>
+<div class="form">
+    <h1>Register</h1>
+    <form action="/register-check" method="post" class="register">
+        <input type="email" name="email" placeholder="Email"/>
+        </br>
+        <input name="password" type="password" placeholder="Password"/>
+        </br>
+        <input name="name" placeholder="Name"/>
+        </br>
+        <input name="adress" placeholder="Adress"/>
+        </br>
+        <input name="phone" type="tel" placeholder="Phone Number"/>
+        </br>
+        <input type="submit"></input>
+    </form>
+</div>
 {% endblock %}   
