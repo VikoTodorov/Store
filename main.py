@@ -19,7 +19,10 @@ def hello_world():
 
 @app.route('/logged', endpoint="logged")
 def logged():
-    return render_template('logged.html', offers=Offer.all())
+    if 'email' in session:
+        return render_template('logged.html', offers=Offer.all())
+    else:
+        return redirect(url_for('unlogged'))
 
 
 @app.route('/unlogged')
@@ -65,10 +68,28 @@ def register():
         return redirect(url_for('logged'))
 
 
-@app.route('/checklogin')
+@app.route('/checklogin', methods=['GET', 'POST'])
 def login():
-    pass
+    if request.method == 'GET':
+        return render_template('login.html')
+    elif request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        user = User.find(email)
+        if not user and user.verify_password(password):
+            return render_template("/login.html", error="Invalid email or \
+                                   password")
+        else:
+            session['email'] = email
+            return render_template('/logged.html')
+
+
+@app.route('/logout')
+def logout():
+    if 'email' in session:
+        session.pop('email', None)
+        return render_template('index.html')
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

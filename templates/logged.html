@@ -2,6 +2,7 @@
 
 <a href="/offers/new">New offer</a>
 <a href="">YourBoughtOffers</a>
+<a href="/logout"> Log Out</a>
 <h1>Offers</h1>
 {% for offer in offers %}
 <a href="/offers/{{ offer.id }}"><b>By:</b> {{ offer.user_id }} | Title: {{ offer.title }}</a>

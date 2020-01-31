@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% block body %}
-<form action="/offers/new" method="post">
-  <label>Name</label>
-  <input id="name"/>
+<form action="/checklogin" method="post">
+  <p> {{ error }} </p>
+  <label>Email</label>
+  <input type="email" name="email"/>
   </br>
   <label>Password</label>
-  <input id="password" type="password"/>
+  <input name="password" type="password"/>
   </br>
-  <button type="submit" onclick="login()">Submit</button>
+  <input type="submit" value"Log In">
 </form>
 {% endblock %}
