@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block body %}
+<p> {{error}} </p>
 <form action="/register-check" method="post" class="register">
     <label>Email</label>
     <input type="email" name="email"/>
